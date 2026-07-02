@@ -24,7 +24,6 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.0
 
-# Configuración necesaria para que el logo se genere correctamente
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
