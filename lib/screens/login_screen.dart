@@ -34,22 +34,68 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Image.asset('assets/logo_app.png', height: 150),
                   const SizedBox(height: 30),
-                  TextField(controller: _cedula, decoration: const InputDecoration(filled: true, fillColor: Colors.white, labelText: "Cédula", border: OutlineInputBorder())),
+                  const TextField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: "Cédula",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
                   const SizedBox(height: 15),
-                  TextField(controller: _pass, obscureText: true, decoration: const InputDecoration(filled: true, fillColor: Colors.white, labelText: "Contraseña", border: OutlineInputBorder())),
+                  const TextField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: "Contraseña",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
                   const SizedBox(height: 25),
                   ElevatedButton(
-                    onPressed: () {}, 
-                    style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 50),
+                    ),
                     child: const Text("INGRESAR"),
                   ),
                   const SizedBox(height: 20),
-                  const Text("¿No tienes cuenta?", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                  const Text(
+                    "¿No tienes cuenta?",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RegistroClienteScreen())), child: const Text("Cliente", style: TextStyle(color: Colors.yellow))),
-                      TextButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RegistroMotorizadoScreen())), child: const Text("Motorizado", style: TextStyle(color: Colors.yellow))),
+                      TextButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const RegistroClienteScreen(),
+                          ),
+                        ),
+                        child: const Text(
+                          "Cliente",
+                          style: TextStyle(color: Colors.yellow),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const RegistroMotorizadoScreen(),
+                          ),
+                        ),
+                        child: const Text(
+                          "Motorizado",
+                          style: TextStyle(color: Colors.yellow),
+                        ),
+                      ),
                     ],
                   )
                 ],
