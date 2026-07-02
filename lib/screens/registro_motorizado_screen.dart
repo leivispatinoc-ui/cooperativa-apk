@@ -13,38 +13,47 @@ class RegistroMotorizadoScreen extends StatefulWidget {
 }
 
 class _RegistroMotorizadoScreenState extends State<RegistroMotorizadoScreen> {
-  final _email = TextEditingController();
-  final _password = TextEditingController();
-  final _nombre = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _nombre = TextEditingController();
   bool _obscureText = true;
+  bool _cargando = false;
   File? _image;
 
   Future<void> _pickImage() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedFile != null) setState(() => _image = File(pickedFile.path));
+    if (pickedFile != null) {
+      setState(() => _image = File(pickedFile.path));
+    }
   }
 
-  void _registrar() async {
-    try {
-      UserCredential user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _email.text, password: _password.text);
-      
-      String? imageUrl;
-      if (_image != null) {
-        final ref = FirebaseStorage.instance.ref().child('documentos/${user.user!.uid}');
-        await ref.putFile(_image!);
-        imageUrl = await ref.getDownloadURL();
-      }
+  Future<void> _registrar() async {
+    if (_image == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Debes subir una foto de tu documento")));
+      return;
+    }
 
-      await FirebaseFirestore.instance.collection('motorizados').doc(user.user!.uid).set({
-        'nombre': _nombre.text,
-        'email': _email.text,
+    setState(() => _cargando = true);
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _email.text.trim(), password: _password.text.trim());
+
+      final ref = FirebaseStorage.instance.ref().child('documentos/${userCredential.user!.uid}');
+      await ref.putFile(_image!);
+      String imageUrl = await ref.getDownloadURL();
+
+      await FirebaseFirestore.instance.collection('motorizados').doc(userCredential.user!.uid).set({
+        'nombre': _nombre.text.trim(),
+        'email': _email.text.trim(),
         'aprobado': false,
         'documento_url': imageUrl,
       });
-      Navigator.pop(context);
+      
+      if (mounted) Navigator.pop(context);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: $e")));
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: $e")));
+    } finally {
+      if (mounted) setState(() => _cargando = false);
     }
   }
 
@@ -69,13 +78,13 @@ class _RegistroMotorizadoScreenState extends State<RegistroMotorizadoScreen> {
                 ),
               ),
             ),
-            TextButton(
-              onPressed: () => FirebaseAuth.instance.sendPasswordResetEmail(email: _email.text),
-              child: const Text("¿Olvidaste tu contraseña?"),
-            ),
-            ElevatedButton(onPressed: _pickImage, child: const Text("Subir Documento")),
             const SizedBox(height: 20),
-            ElevatedButton(onPressed: _registrar, child: const Text("REGISTRAR")),
+            ElevatedButton(onPressed: _pickImage, child: const Text("Subir Documento")),
+            if (_image != null) const Text("Documento seleccionado", style: TextStyle(color: Colors.green)),
+            const SizedBox(height: 20),
+            _cargando 
+              ? const CircularProgressIndicator() 
+              : ElevatedButton(onPressed: _registrar, child: const Text("REGISTRAR")),
           ],
         ),
       ),

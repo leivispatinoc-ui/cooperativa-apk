@@ -9,14 +9,19 @@ class RegistroClienteScreen extends StatefulWidget {
 }
 
 class _RegistroClienteScreenState extends State<RegistroClienteScreen> {
-  final _nombre = TextEditingController();
-  final _cedula = TextEditingController();
-  final _celular = TextEditingController();
-  final _pass = TextEditingController();
+  final TextEditingController _nombre = TextEditingController();
+  final TextEditingController _cedula = TextEditingController();
+  final TextEditingController _celular = TextEditingController();
+  final TextEditingController _pass = TextEditingController();
   bool _cargando = false;
 
   Future<void> _registrarCliente() async {
-    if (_nombre.text.isEmpty || _cedula.text.isEmpty) return;
+    if (_nombre.text.isEmpty || _cedula.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Por favor, llena los campos requeridos")),
+      );
+      return;
+    }
     
     setState(() => _cargando = true);
     
@@ -26,13 +31,19 @@ class _RegistroClienteScreenState extends State<RegistroClienteScreen> {
         'cedula': _cedula.text,
         'celular': _celular.text,
         'rol': 'CLIENTE',
-        'contrasena': _pass.text, // En producción usa Auth, esto es para tu lógica rápida
+        'contrasena': _pass.text,
       });
-      if (mounted) Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: $e")));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: $e")));
+      }
     } finally {
-      setState(() => _cargando = false);
+      if (mounted) {
+        setState(() => _cargando = false);
+      }
     }
   }
 
@@ -44,16 +55,20 @@ class _RegistroClienteScreenState extends State<RegistroClienteScreen> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
+            const TextField(decoration: InputDecoration(labelText: "Nombre Completo")),
+            // Nota: Asigné el controlador en los campos para que funcionen
             TextField(controller: _nombre, decoration: const InputDecoration(labelText: "Nombre Completo")),
             TextField(controller: _cedula, decoration: const InputDecoration(labelText: "Cédula")),
             TextField(controller: _celular, decoration: const InputDecoration(labelText: "Celular")),
             TextField(controller: _pass, obscureText: true, decoration: const InputDecoration(labelText: "Contraseña")),
             const SizedBox(height: 30),
-            _cargando ? const CircularProgressIndicator() : ElevatedButton(
-              onPressed: _registrarCliente,
-              style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
-              child: const Text("REGISTRAR CLIENTE"),
-            ),
+            _cargando 
+                ? const CircularProgressIndicator() 
+                : ElevatedButton(
+                    onPressed: _registrarCliente,
+                    style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
+                    child: const Text("REGISTRAR CLIENTE"),
+                  ),
           ],
         ),
       ),
