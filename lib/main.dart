@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart'; 
+import 'firebase_options.dart';
 import 'screens/login_screen.dart';
 
 void main() async {
-  // Asegura que los bindings de Flutter estén listos
+  // Asegura que los bindings de Flutter estén listos antes de iniciar
   WidgetsFlutterBinding.ensureInitialized();
 
   // Inicialización de Firebase
@@ -24,10 +24,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Cooperativa Motorizados',
-      home: LoginScreen(),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const LoginScreen(),
     );
   }
 }
