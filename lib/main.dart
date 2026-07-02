@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'firebase_options.dart'; 
 import 'screens/login_screen.dart';
 
 void main() async {
+  // Asegura que los bindings de Flutter estén listos
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (kIsWeb) {
+  // Inicialización de Firebase
+  try {
     await Firebase.initializeApp(
-      options: const FirebaseOptions(
-        apiKey: "AIzaSyAD1O6V-9b_9xo4miTvHJRGvupCup_O-dI",
-        authDomain: "cooperativa-motorizados.firebaseapp.com",
-        projectId: "cooperativa-motorizados",
-        storageBucket: "cooperativa-motorizados.firebasestorage.app",
-        messagingSenderId: "420960631788",
-        appId: "1:420960631788:web:957bfd5b15a20d07ee5ec9",
-      ),
+      options: DefaultFirebaseOptions.currentPlatform,
     );
-  } else {
-    await Firebase.initializeApp();
+  } catch (e) {
+    debugPrint("Error al inicializar Firebase: $e");
   }
 
   runApp(const MyApp());
@@ -31,6 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'Cooperativa Motorizados',
       home: LoginScreen(),
     );
   }

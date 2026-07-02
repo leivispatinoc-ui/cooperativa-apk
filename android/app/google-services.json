@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:420960631788:android:9267b939f7402a54ee5ec9",
+        "android_client_info": {
+          "package_name": "com.cooperativa.motorizados"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbOz9j633ijdUFV5CXUNOtlOQ6LHeTTsc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:420960631788:android:e2aa78221bc79526ee5ec9",
         "android_client_info": {
           "package_name": "com.vayalo.app"

@@ -1,4 +1,4 @@
-name: cooperativa_movil
+name: cooperativa_final
 description: "App tipo InDriver para motorizados y clientes."
 publish_to: 'none'
 version: 1.0.0+1
@@ -12,8 +12,8 @@ dependencies:
   firebase_core: ^3.0.0
   firebase_auth: ^5.0.0
   cloud_firestore: ^5.0.0
-  firebase_storage: ^12.0.0 # Para guardar las fotos de los documentos
-  image_picker: ^1.1.0     # Para abrir la cámara
+  firebase_storage: ^12.0.0
+  image_picker: ^1.1.0
   flutter_map: ^7.0.0
   latlong2: ^0.9.0
   geolocator: ^13.0.0
@@ -24,6 +24,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.0
 
+# Configuración necesaria para que el logo se genere correctamente
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
